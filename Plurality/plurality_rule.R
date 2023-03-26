@@ -1,4 +1,3 @@
-
 library(RcppAlgos)
 library(data.table)
 

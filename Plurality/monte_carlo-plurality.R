@@ -1,5 +1,12 @@
 library(gtools)
 
+# function simulation_plurality_rule
+# input: a non negative integer number of voters,
+#        a vector with probability mass function for options
+#        a numeric object for the mean competence of the group of voters
+# output: probability that first option wins under plurality rule
+
+
 simulation_plurality_rule = function(number_of_voters, number_of_options, mean_competence){
   n_sim = 100
 
@@ -23,11 +30,26 @@ simulation_plurality_rule = function(number_of_voters, number_of_options, mean_c
     
     df[,1] = df[,1]+winning
     
+    #Filtering cases in which the first option is the winning options with a general algorithm 
+    ## Standard. Comment and choose one of the above to improve speed
+    preferred = c()
+    for (option in 2:length(options)) {
+      most_a = which(df[,1] > df[,option])
+      if (option == 2) {
+        preferred = c(preferred, most_a)
+      } else {
+        preferred = intersect(preferred, most_a)
+      }
+    }
+    
+    ########################################################################
+    #Filtering cases in which the first option is the winning options with an specific algorithm 
+    
     #Un-comment for two options
     #preferred = which(df[,1] > df[,2])
     
     #Un-comment for three options
-    preferred = intersect(which(df[,1] > df[,2]), which(df[,1] > df[,3]))
+    #preferred = intersect(which(df[,1] > df[,2]), which(df[,1] > df[,3]))
     
     
     #Un-comment for four options
@@ -39,18 +61,9 @@ simulation_plurality_rule = function(number_of_voters, number_of_options, mean_c
     # preffered_c = intersect(which(df[,1] > df[,4]), which(df[,1] > df[,5]))
     # preferred = intersect(preferred_b, preffered_c)
     
-    #General. Comment to improve speed
-    # preferred = c()
-    # for (option in 2:length(options)) {
-    #   most_a = which(df[,1] > df[,option])
-    #   if (option == 2) {
-    #     preferred = c(preferred, most_a)
-    #   } else {
-    #     preferred = intersect(preferred, most_a)
-    #   }
-    # }
-    # 
-    # df = df[preferred,]
+    # Choosing only the cases where the first option wins
+    df = df[preferred,]
+    ########################################################################
     
     
     prob = 0
@@ -90,25 +103,3 @@ voters = 11
 options = 3
 mean_competence = 0.5
 simulation_plurality_rule(voters, options, mean_competence)
-
-# computing the winning probabilities
-min_total.voters <- 5
-max_total_voters <- 11
-values = seq(min_total.voters, max_total_voters)
-
-values = c(11, 31, 71)
-
-p = c()
-for (i in values){  
-  p<- c(p, simulation_plurality_rule(i , options, mean_competence) )
-}
-
-
-# plotting the vector of winning probabilities against number of voters
-
-plot( values, p , 
-      type = 'l', xlab="Number of voters", ylab = "Collective Competence",
-      ylim = c(0, 1) 
-)
-title( "probability that first option wins" )
-abline( v=min_total.voters )
