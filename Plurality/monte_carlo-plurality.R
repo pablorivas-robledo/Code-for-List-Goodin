@@ -103,3 +103,37 @@ voters = 11
 options = 3
 mean_competence = 0.5
 simulation_plurality_rule(voters, options, mean_competence)
+
+# repeated calls of the functions changing the number of voters
+
+options = c(0.5, 0.3, 0.2)
+num.options = length(options)
+min_total.voters <- 5
+max_total_voters <- 13
+values = seq(min_total.voters, max_total_voters)
+
+# computing the winning probabilities
+p = c()
+for (i in values){  
+  p<- c(p, plurality_rule(i , options) )
+}
+
+# plotting the vector of winning probabilities against number of voters
+
+plot( values, p , 
+      type = 'l', xlab="Number of voters", ylab = "Collective Competence",
+      ylim = c(0.3, 1) 
+)
+title( "Probability that the first option wins" )
+abline( v=min_total.voters )
+
+
+library(gridExtra)
+
+data_for_table = data.frame(values, p)
+colnames(data_for_table) = c("Voters", "P(Majn)")
+
+png("data.png", height = 50*nrow(data_for_table), width = 200*ncol(data_for_table))
+grid.table(data_for_table)
+dev.off()
+

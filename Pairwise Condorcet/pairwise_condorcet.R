@@ -31,8 +31,10 @@ pairwise_condorcet = function(voters, options){
       single = initial_sequence[i] / (1 - new_sequence[i])
       values_for_final[i] = single 
     }
-    true_prob = prod(values_for_final) #Probs for the orderings
+    #Probs for the orderings
+    true_prob = prod(values_for_final) 
     
+    # Final values of the orderings based on the probability of individual option
     final_probabilities[n] = true_prob
   }
   
@@ -64,8 +66,13 @@ pairwise_condorcet = function(voters, options){
   return(prob)
 }
 
-total.voters = 71
-options = c(0.6, 0.3, 0.1)
+#Example to run the function
+
+##voters
+total.voters = 11
+##options
+options = c(0.5, 0.3, 0.2)
+## one call of the function 
 pairwise_condorcet(total.voters, options)
 
 

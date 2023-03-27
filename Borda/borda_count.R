@@ -1,6 +1,5 @@
 library(RcppAlgos)
 library(data.table)
-library(votesys)
 
 # function plurality_rule
 # input: a non negative integer number of voters and
@@ -66,14 +65,13 @@ borda_count = function(voters, options){
   return(prob)
 }
 
-total.voters = 31
-options = c(0.335, 0.3325, 0.3325)
-borda_count(total.voters, options)
+#Example to run the function
 
-voters_for_values = c(11, 31, 51, 71)
-for (n in voters_for_values) {
-  print(n)
-  print(borda_count(n, options))
-}
+##voters
+total.voters = 11
+##options
+options = c(0.5, 0.3, 0.2)
+## one call of the function 
+borda_count(total.voters, options)
 
 
