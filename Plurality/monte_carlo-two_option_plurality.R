@@ -48,9 +48,8 @@ simulation_plurality_rule = function(number_of_voters, number_of_options, mean_c
   return(final)
 }
 
-number_of_voters = 11
+number_of_voters = 21
 number_of_options = 2
 mean_competence = 0.6
 simulation_plurality_rule(number_of_voters, number_of_options, mean_competence)
-
 
