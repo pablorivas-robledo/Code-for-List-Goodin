@@ -68,10 +68,39 @@ borda_count = function(voters, options){
 #Example to run the function
 
 ##voters
-total.voters = 11
+total.voters = 100
 ##options
-options = c(0.5, 0.3, 0.2)
+options = c(0.4, 0.3, 0.3)
 ## one call of the function 
 borda_count(total.voters, options)
+
+# arriving at 0.999...
+max = 0.999
+calc = 0
+
+start = 20
+
+while (max - calc > 0.00001) {
+  calc = borda_count(voters = start , options)
+  print(start)
+  print(calc)
+  gc()
+  start = start + 1
+}
+
+# plotting the vector of winning probabilities against number of voters
+values = c(7:21)
+p = c()
+for (i in values){  
+  p<- c(p, borda_count(i , options) )
+}
+
+
+plot( values, p , 
+      type = 'l', xlab="Number of voters", ylab = "Collective Competence",
+      ylim = c(min(p), max(p)) 
+)
+title( "Probability that first option wins" )
+abline( v=min_total.voters )
 
 

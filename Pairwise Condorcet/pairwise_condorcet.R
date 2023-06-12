@@ -31,16 +31,15 @@ pairwise_condorcet = function(voters, options){
       single = initial_sequence[i] / (1 - new_sequence[i])
       values_for_final[i] = single 
     }
-    #Probs for the orderings
-    true_prob = prod(values_for_final) 
+    true_prob = prod(values_for_final) #Probs for the orderings
     
-    # Final values of the orderings based on the probability of individual option
     final_probabilities[n] = true_prob
   }
   
   candidates = permuteGeneral(letters[1:length(options)])
   
-  df = compositionsGeneral(0:total.voters, length(1:nrow(candidates)), repetition = TRUE, weak = TRUE)
+  df = compositionsGeneral(0:voters, length(1:nrow(candidates)), repetition = TRUE, weak = TRUE)
+  
   
   most_preferred = intersect(which(df[,1] + df[,2] + df[,5] > df[,3] + df[,4] + df[,6]), 
                              which(df[,1] + df[,2] + df[,3] > df[,5] + df[,6] + df[,4]))
@@ -71,8 +70,38 @@ pairwise_condorcet = function(voters, options){
 ##voters
 total.voters = 11
 ##options
-options = c(0.5, 0.3, 0.2)
+options = c(0.4, 0.3, 0.3)
 ## one call of the function 
 pairwise_condorcet(total.voters, options)
+
+
+# arriving at 0.999...
+max = 0.999
+calc = 0
+
+start = 20
+
+while (max - calc > 0.00001) {
+  calc = pairwise_condorcet(voters = start , options)
+  print(start)
+  print(calc)
+  gc()
+  start = start + 1
+}
+
+# plotting the vector of winning probabilities against number of voters
+values = c(7:21)
+p = c()
+for (i in values){  
+  p<- c(p, pairwise_condorcet(i , options) )
+}
+
+
+plot( values, p , 
+      type = 'l', xlab="Number of voters", ylab = "Collective Competence",
+      ylim = c(min(p), max(p)) 
+)
+title( "Probability that first option wins" )
+abline( v=min_total.voters )
 
 
